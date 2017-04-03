@@ -1,0 +1,32 @@
+﻿Web Page:
+  Name:               FAQ001
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Hello World"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_WEB)
+    Define_Com Class(#PRIM_VS.Style) Name(#Style1) Fontsize(26)
+    
+    Define_Com Class(#PRIM_LABL) Name(#Label1) Caption('Hello World') Displayposition(1) Ellipses(Word) Height(60) Left(116) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(93) Verticalalignment(Center) Width(205) Style(#Style1)
+    
+    Evtroutine Handling(#Com_owner.Initialize)
+    
+    Endroutine
+    
+    End_Com
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              Spinner
+
+    Multilingual Text:
+    - ENG:
+        Text:               "Loading..."
