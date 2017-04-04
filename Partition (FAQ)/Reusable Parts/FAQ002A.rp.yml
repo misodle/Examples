@@ -1,0 +1,53 @@
+﻿Reusable Part:
+  Name:               FAQ002a
+  Enabled For RDMLX:  Yes
+  Target Platform:    Browser
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Child Object"
+
+  Source: |
+    Function Options(*DIRECT)
+    Begin_Com Role(*EXTENDS #PRIM_PANL) Displayposition(1) Tabposition(1) Left(0) Top(0) Height(73) Width(577)
+    
+    Define_Com Class(#STD_NUM.Visual) Name(#pNumber1) Componentversion(1) Displayposition(1) Height(21) Left(16) Parent(#COM_OWNER) Tabposition(1) Top(8) Usepicklist(False) Width(352) Labeltype(Caption) Caption('Number 1')
+    Define_Com Class(#STD_NUM.Visual) Name(#pNumber2) Componentversion(1) Displayposition(2) Height(21) Left(16) Parent(#COM_OWNER) Tabposition(2) Top(40) Usepicklist(False) Width(352) Caption('Number 2') Labeltype(Caption)
+    
+    Define_Com Class(#PRIM_PHBN) Name(#btn_Sum) Caption('Sum by Signaling') Displayposition(3) Left(400) Parent(#COM_OWNER) Tabposition(3) Top(40) Width(140)
+    
+    * Define the event to signal a change
+    * And parameters
+    Define_Evt Name(add_event_occured)
+    Define_Map For(*input) Class(#STD_NUM) Name(#new_sum)
+    
+    * Add 2 numbers and return result
+    Mthroutine Name(Add_2_Numbers_Directly)
+    
+    Define_Map For(*INPUT) Class(#STD_NUM) Name(#p_parm1)
+    Define_Map For(*INPUT) Class(#STD_NUM) Name(#p_parm2)
+    
+    Define_Map For(*OUTPUT) Class(#STD_NUM) Name(#p_the_sum)
+    
+    #p_the_sum := #p_parm1 + #p_parm2
+    
+    Endroutine
+    
+    Evtroutine Handling(#btn_Sum.Click)
+    
+    * Need a result field for the sum
+    Define Field(#p_the_sum2) Reffld(#STD_NUM)
+    
+    * Add the 2 numbers inside this RP to calcluate result
+    #com_owner.Add_2_Numbers_Directly P_Parm1(#pNumber1) P_Parm2(#pNumber2) P_The_Sum(#p_the_sum2)
+    
+    * Now signal the change to the parent along with payload
+    Signal Event(add_event_occured) New_Sum(#p_the_sum2)
+    
+    Endroutine
+    
+    End_Com

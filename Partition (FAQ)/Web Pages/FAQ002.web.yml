@@ -1,0 +1,70 @@
+﻿Web Page:
+  Name:               FAQ002
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Signaling and Method Calls"
+
+  Source: |
+    <-
+    
+    * FAQ002
+    *
+    * OO Basics
+    *
+    * Parent Objects execute method calls in Child Objects directly
+    * Children Objects signal events to Parent Objects indirectly
+    *
+    * -------------------------
+    * Mthroutine call
+    * -------------------------
+    * The first 3 fields implement a simple calculator
+    * The addition is sent to a child component which adss the fields and returns the result
+    * Execution is via a simple method call
+    *
+    * ----------------------------------------------------
+    * Signaling Event
+    * ----------------------------------------------------
+    * The next 2 fields live in a child component
+    * The submit button is also in the component
+    * So the addition occurs in the child component and we need a way to get the result to the total field in the parent
+    * We do this in the child component by signalling an event (along with payload) to the parent
+    
+    Begin_Com Role(*EXTENDS #PRIM_WEB)
+    
+    * Resueable Part containing the mthroutine call to add 2 numbers
+    * Also contains additional fields to implement and add in the RP and return response via signaling
+    Define_Com Class(#FAQ002a) Name(#FAQ002a) Left(16) Parent(#COM_OWNER) Tabstop(False) Top(156)
+    
+    * Fields and buttons
+    Define_Com Class(#STD_NUM.Visual) Name(#pTotal2) Componentversion(1) Displayposition(2) Height(21) Left(32) Parent(#COM_OWNER) Tabposition(2) Top(240) Usepicklist(False) Width(352) Caption('Total') Labeltype(Caption)
+    Define_Com Class(#PRIM_PHBN) Name(#btn_Sum) Caption('Sum by Mthroutine') Displayposition(3) Left(416) Parent(#COM_OWNER) Tabposition(3) Top(108) Width(140)
+    Define_Com Class(#STD_NUM.Visual) Name(#pNumber1) Componentversion(1) Displayposition(4) Height(21) Left(32) Parent(#COM_OWNER) Tabposition(4) Top(24) Usepicklist(False) Width(352) Caption('Number 1') Labeltype(Caption)
+    Define_Com Class(#STD_NUM.Visual) Name(#pNumber2) Componentversion(1) Displayposition(5) Height(21) Left(32) Parent(#COM_OWNER) Tabposition(5) Top(62) Usepicklist(False) Width(352) Caption('Number 2') Labeltype(Caption)
+    Define_Com Class(#STD_NUM.Visual) Name(#pTotal1) Componentversion(1) Displayposition(6) Height(21) Left(32) Parent(#COM_OWNER) Tabposition(6) Top(108) Usepicklist(False) Width(352) Caption('Total') Labeltype(Caption)
+    
+    * Direct mthroutine call
+    Evtroutine Handling(#btn_Sum.Click)
+    #FAQ002a.Add_2_Numbers_Directly P_Parm1(#pNumber1) P_Parm2(#pNumber2) P_The_Sum(#pTotal1)
+    Endroutine
+    
+    * Monitor for Signal from Child
+    Evtroutine Handling(#FAQ002a.add_event_occured) New_Sum(#this_is_the_new_Sum)
+    #pTotal2 := #this_is_the_new_Sum
+    Endroutine
+    
+    End_Com
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              Spinner
+
+    Multilingual Text:
+    - ENG:
+        Text:               "Loading..."
