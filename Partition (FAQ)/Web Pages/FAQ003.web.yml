@@ -1,0 +1,345 @@
+﻿Web Page:
+  Name:               FAQ003
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Waiting Message - Handling UI Blocking"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_WEB) Layoutmanager(#TableLayout1) Height(401) Width(705)
+    Define_Com Class(#PRIM_VS.Style) Name(#Style1) Fontsize(72) Fontunits(Pixel) Bold(True)
+    
+    Define_Com Class(#PRIM_VS.Style) Name(#Style2) Backgroundbrush(#Brush1)
+    Define_Com Class(#PRIM_VS.SolidBrush) Name(#Brush1) Color(81:81:82) Opacity(50)
+    
+    Define_Com Class(#PRIM_TBLO) Name(#TableLayout1)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#TableLayout1)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#TableLayout1)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#STD_NUMItem1) Alignment(TopLeft) Column(#Column1) Manage(#STD_NUM) Parent(#TableLayout1) Row(#Row1) Sizing(None) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button1Item1) Manage(#Button1) Parent(#TableLayout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Panel1Item1) Column(#Column1) Manage(#Panel1) Parent(#TableLayout1) Row(#Row1)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button2Item1) Alignment(TopLeft) Column(#Column1) Manage(#Button2) Parent(#TableLayout1) Row(#Row1) Sizing(None) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button3Item1) Manage(#Button3) Parent(#TableLayout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button4Item1) Manage(#Button4) Parent(#TableLayout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button5Item1) Column(#Column1) Manage(#Button5) Parent(#TableLayout1) Sizing(None) Row(#Row1) Alignment(TopLeft) Flow(Down) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button6Item1) Manage(#Button6) Parent(#TableLayout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10) Marginleft(10)
+    
+    Define_Com Class(#PRIM_TBLO) Name(#TableLayout2)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column2) Displayposition(1) Parent(#TableLayout2)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row2) Displayposition(1) Parent(#TableLayout2)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Label1Item1) Manage(#Label1) Parent(#TableLayout2) Row(#Row2) Sizing(ContentWidthAndHeight) Column(#Column2) Flow(Right)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem1) Alignment(TopLeft) Column(#Column2) Flow(Down) Manage(#Button2) Parent(#TableLayout2) Row(#Row2) Sizing(None)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem2) Alignment(TopLeft) Column(#Column2) Flow(Down) Manage(#Button3) Parent(#TableLayout2) Row(#Row2) Sizing(None) Margintop(10) Marginleft(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem3) Alignment(TopLeft) Column(#Column2) Flow(Right) Manage(#Button4) Parent(#TableLayout2) Row(#Row2) Sizing(None)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem4) Alignment(TopLeft) Column(#Column2) Flow(Right) Manage(#Button5) Parent(#TableLayout2) Row(#Row2) Sizing(None)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem5) Alignment(TopLeft) Column(#Column2) Flow(Right) Manage(#Button6) Parent(#TableLayout2) Row(#Row2) Sizing(None)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Image1Item1) Manage(#Image1) Parent(#TableLayout2) Row(#Row2) Sizing(None) Column(#Column2) Flow(Right)
+    
+    Define_Com Class(#STD_NUM.Visual) Name(#STD_NUM) Componentversion(1) Displayposition(1) Height(19) Parent(#COM_OWNER) Tabposition(1) Usepicklist(False) Width(322) Top(10) Left(10)
+    Define_Com Class(#PRIM_PHBN) Name(#Button1) Displayposition(4) Parent(#COM_OWNER) Tabposition(7) Top(109) Caption('Wait Style One') Width(111)
+    Define_Com Class(#PRIM_PANL) Name(#Panel1) Displayposition(8) Left(0) Parent(#COM_OWNER) Tabposition(8) Tabstop(False) Top(0) Height(401) Width(705) Layoutmanager(#TableLayout2) Style(#Style2)
+    Define_Com Class(#PRIM_LABL) Name(#Label1) Caption('Please Wait') Displayposition(1) Ellipses(Word) Height(97) Left(157) Parent(#Panel1) Tabposition(1) Tabstop(False) Top(152) Verticalalignment(Center) Width(390) Style(#Style1)
+    Define_Com Class(#PRIM_PHBN) Name(#Button2) Displayposition(7) Parent(#COM_OWNER) Tabposition(6) Top(214) Caption('Can You Click Me?') Width(111)
+    Define_Com Class(#PRIM_PHBN) Name(#Button3) Caption('Wait Style Two') Displayposition(5) Parent(#COM_OWNER) Tabposition(5) Top(144) Width(111)
+    Define_Com Class(#PRIM_PHBN) Name(#Button4) Caption('This Doesn''t Work') Displayposition(3) Parent(#COM_OWNER) Tabposition(4) Top(74) Width(111)
+    Define_Com Class(#PRIM_PHBN) Name(#Button5) Displayposition(2) Parent(#COM_OWNER) Tabposition(3) Top(39) Caption('Overlay_On')
+    Define_Com Class(#PRIM_PHBN) Name(#Button6) Displayposition(6) Parent(#COM_OWNER) Tabposition(2) Top(179) Width(111) Caption('Wait Style Three')
+    Define_Com Class(#PRIM_IMAG) Name(#Image1) Displayposition(2) Left(547) Parent(#Panel1) Tabposition(2) Tabstop(False) Top(175) Filename('lansa_spin.gif')
+    
+    Define_Com Class(#PRIM_TIMR) Name(#Timer1) Startup(Manual)
+    Define_Com Class(#PRIM_TIMR) Name(#Timer2) Startup(Manual)
+    Define_Com Class(#PRIM_TIMR) Name(#Timer3) Startup(Manual)
+    
+    * Hide the Panel Overlay on Initialization
+    Evtroutine Handling(#Com_owner.Initialize)
+    #Panel1.Visible := False
+    #Panel1.DisplayPosition := 1
+    Endroutine
+    
+    * ====================================================================
+    * Attempt to click the "Can you click Me?" button after attempting the
+    * different styles of UI Blocking. If you can click this button
+    * and see a result, then the UI Blocking did not work.
+    * ====================================================================
+    
+    * Click this button to test the overlay
+    Evtroutine Handling(#Button2.Click)
+    #sys_appln.TraceMessageText( 'Clicked Alert Button' )
+    #sys_Web.alert( 'Yes you can' )
+    Endroutine
+    
+    * ====================================================================
+    * "Overlay_On"
+    * Timer Overlay
+    * This is not practical in any real sense except to have a delay in
+    * the UI with no server interaction.
+    * To place a server call you would need to delay the execution of
+    * the click from the asynch server call. Wait Style Three illustrates this.
+    * ====================================================================
+    Evtroutine Handling(#Button5.Click)
+    
+    #com_self.Activate_Overlay
+    
+    Endroutine
+    Mthroutine Name(Activate_Overlay)
+    
+    * Enable the Overlay
+    #Panel1.Visible := True
+    
+    * Start Timer
+    #Timer1.interval := 5000
+    #Timer1.Start
+    
+    Endroutine
+    Evtroutine Handling(#Timer1.Tick)
+    
+    * Stop the Timer
+    #Timer1.Stop
+    
+    * Hide the Overlay
+    #Panel1.Visible := False
+    
+    Endroutine
+    
+    
+    * ===================================================================================
+    * Inline with visible / hide - "This Doesn't work"
+    *
+    * Why doesn't this work.
+    * The UI in VL Web is single threaded.
+    * So the UI is not updated until there is a pause in end uesr code execution.
+    * Here we set the panel to visible to block the UI.
+    * However all the subsequent calls to the server are synchronous.
+    * This does not allow a pause for the engine to update the UI.
+    * Then when we reach the end of the mthroutine we hide the overlay.
+    * We don't ever even get to see the overlay.
+    * ===================================================================================
+    
+    Evtroutine Handling(#Button4.Click)
+    #com_self.this_doesnt_work
+    Endroutine
+    Mthroutine Name(this_doesnt_work)
+    
+    Define_Com Class(#FAQ003s.Do_Something_Else) Name(#Add2)
+    
+    * Enable the Overlay
+    * When enabled the panel covers the entire scren
+    #Panel1.Visible := True
+    
+    * Do a bunch of stuff
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    #Add2.Execute Std_Num(#STD_NUM)
+    
+    * Hide the Overlay
+    #Panel1.Visible := False
+    
+    Endroutine
+    
+    
+    * ====================================================================
+    * Asynchronous - Wait Style One
+    *
+    * Why does this work?
+    * When we execute the server call we execute asynchronously.
+    * There is no more user code to execute and the server call is in
+    * progress waiting to return.
+    * So then the UI update can occur and we see the overly.
+    * And we can't click the button as the overlay is ontop and trapping
+    * all click events.
+    * ====================================================================
+    Evtroutine Handling(#Button1.Click)
+    #com_self.Do_stuff
+    Endroutine
+    Mthroutine Name(Do_stuff)
+    
+    * Data Class
+    Define_Com Class(#FAQ003s.Do_Something) Name(#Add1)
+    
+    * Enable the Overlay
+    * When enabled the panel covers the entire scren
+    #Panel1.Visible := True
+    
+    * Do the server call Asnych Style
+    #Add1.ExecuteAsync Std_Num(#STD_NUM)
+    
+    * Now Handle the Response
+    Evtroutine Handling(#Add1.completed #Add1.Failed)
+    * Hide the Overlay
+    #Panel1.Visible := False
+    Endroutine
+    
+    Endroutine
+    
+    * ====================================================================
+    * Synchronous - Wait Style Two
+    *
+    * This is similar to wait style one.
+    * The different here is we have a dummy asynch call before the real
+    * call. The real call is synchronous. Why might we do this?
+    * We might want to have things which MUST execute in order 1 after the
+    * next, for example cascascading drop downs. In this case, if all the calls
+    * were asynchronous, we could not guarantee that they would all complete in the
+    * correct order leading to impossible conditions.
+    *
+    * You will note that when we are waiting for something server side
+    * The animated gif will not spin. In this example the delay is long.
+    * The gif will spin for 5 seconds, and then not spin for 5 seconds.
+    * Any clicks during the wait while it is spinning will be ignored.
+    * Any clicks while the gif is NOT spinning will get processed when
+    * we return from the synchronous processing event.
+    *
+    * What this shows us, is that even though you are going to the server
+    * Snychronously and it looks like the UI is blocked (due to our previous
+    * ansynch request), it is not. The click events are not handled because
+    * the engine is single threaded and the engine is blocked on the synchronous
+    * call to the server it is waiting on. When we return from the server
+    * the events are picked up and processed then.
+    *
+    * So even with the overlay in place, once the synchronous processing starts
+    * the engine is blocked and the click events are queued up and processed
+    * immediately when it becomes unblocked.
+    *
+    * The visual style will discourage some from clicking, but the button is still
+    * clickable when blocked (waiting for a server response synchronously.
+    *
+    * To resolve this we must execute another asynch call after the synchronous
+    * call to pick up this clicks and give the engine time to process those clicks
+    * and disgard them. You can test this in the code below.
+    * Set the field #FAIL_TEST to either true or false to see the differences.
+    *
+    * So this method works, but it has some issues.
+    * They are
+    * 1. Need 2 asynch calls and 1 synch call to correctly handle click events.
+    * 2. Animated gifs will not spin while waiting on synch event
+    *
+    * ====================================================================
+    Evtroutine Handling(#Button3.Click)
+    #com_self.Proc_Queue
+    Endroutine
+    Mthroutine Name(Proc_Queue)
+    
+    Define_Com Class(#FAQ003s.Do_Something) Name(#Wait_Asynchronous)
+    
+    * Enable the Overlay
+    * When enabled the panel covers the entire scren
+    #Panel1.Visible := True
+    
+    * This gives the display time to update
+    #Wait_Asynchronous.ExecuteAsync
+    
+    * Now Do all the actual processing
+    Evtroutine Handling(#Wait_Asynchronous.completed #Wait_Asynchronous.Failed)
+    #com_self.Proc_Start
+    Endroutine
+    
+    Endroutine
+    Mthroutine Name(Proc_Start)
+    
+    Define_Com Class(#PRIM_BOLN) Name(#Fail_Test)
+    
+    Define_Com Class(#FAQ003s.Dummy_Call) Name(#Wait_Asynchronous)
+    Define_Com Class(#FAQ003s.Do_Something) Name(#Add1)
+    
+    * * NOTE: Set flag to False to trap events and pass the test
+    #Fail_Test := True
+    
+    * Do all the synchronous processing
+    #Add1.Execute Std_Num(#STD_NUM) /* with wait */
+    
+    * * We do this to give the UI time to trap any click events at the overlay panel level
+    * * If we don't do this the click events will run when all processing completes (the UI events are queued)
+    If (#Fail_Test = False)
+    #Wait_Asynchronous.ExecuteAsync
+    Endif
+    
+    * Only now do we hide the overlay after the UI events have been handled and discarded
+    Evtroutine Handling(#Wait_Asynchronous.completed #Wait_Asynchronous.Failed)
+    #Panel1.Visible := False
+    Endroutine
+    
+    * We need this if NOT doing the ansynch call at the end to re-enable the UI
+    Evtroutine Handling(#Add1.completed #Add1.Failed)
+    If (#Fail_Test = True)
+    #Panel1.Visible := False
+    Endif
+    Endroutine
+    
+    Endroutine
+    
+    
+    * ====================================================================
+    * Wait Style Three - Overlay With Timers
+    *
+    * This works, but each button, event, server call involves the
+    * creation oe multiple timers.
+    *
+    * It doesn't suffer from the same problem as Style Two because the timer
+    * delay gives the UI time to process the UI changes and the trapping
+    * of click events while waiting on the synchronous server call.
+    *
+    * This type of logic might get hard to follow.
+    *
+    * ====================================================================
+    Evtroutine Handling(#Button6.Click)
+    #com_self.Process_Start
+    Endroutine
+    Mthroutine Name(Process_Start)
+    #Panel1.Visible := True
+    #Timer2.interval := 5
+    #Timer2.Start
+    Endroutine
+    Evtroutine Handling(#Timer2.Tick)
+    #Timer2.Stop
+    #com_self.dostuff
+    Endroutine
+    Mthroutine Name(dostuff)
+    Define_Com Class(#FAQ003s.Do_Something) Name(#Add1)
+    
+    #Add1.Execute Std_Num(#STD_NUM)
+    * This alone will not work
+    * #Panel1.Visible := False
+    * Return
+    * Need the second delay to give the overlay time to intercept any attempted click attempts
+    #Timer3.interval := 5
+    #Timer3.Start
+    Endroutine
+    Evtroutine Handling(#Timer3.Tick)
+    #Timer3.Stop
+    #Panel1.Visible := False
+    Endroutine
+    
+    
+    End_Com
+    
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              Spinner
+
+    Multilingual Text:
+    - ENG:
+        Text:               "Loading..."

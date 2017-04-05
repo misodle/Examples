@@ -1,0 +1,57 @@
+﻿ServerModule:
+  Name:               FAQ003s
+  Target Platform:    Windows/IBM i/Linux
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Wait Message -Handling UI Blocking"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_SRVM)
+    
+    Srvroutine Name(Do_Something)
+    
+    Field_Map For(*both) Field(#std_num)
+    
+    If ((*OSAPI = WIN32))
+    Use Builtin(OV_SLEEP) With_Args(5000)
+    Endif
+    
+    If ((*OSAPI = IBMI))
+    Exec_Os400 Command('DLYJOB DLY(5)')
+    Endif
+    
+    #STD_NUM += 1
+    
+    Endroutine
+    
+    Srvroutine Name(Do_Something_Else)
+    
+    Field_Map For(*both) Field(#std_num)
+    
+    #STD_NUM += 1
+    
+    Endroutine
+    
+    Srvroutine Name(Dummy_Call)
+    
+    * If ((*OSAPI = WIN32))
+    * Use Builtin(OV_SLEEP) With_Args(20)
+    * Endif
+    *
+    * If ((*OSAPI = IBMI))
+    * Exec_Os400 Command('DLYJOB DLY(5)')
+    * Endif
+    
+    Endroutine
+    
+    
+    
+    End_Com
+    
+    
+    
