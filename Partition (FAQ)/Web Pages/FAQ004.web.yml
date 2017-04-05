@@ -1,0 +1,87 @@
+﻿Web Page:
+  Name:               FAQ004
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Center Align Text in MenuBar"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_WEB)
+    
+    Define_Com Class(#PRIM_VS.Style) Name(#Style1)
+    
+    Define_Com Class(#PRIM_PPNL.MenuBar) Name(#MenuBar1) Displayposition(1) Left(80) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(120) Width(505)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem1) Caption('MenuItem1') Displayposition(1) Height(30) Menupopup(#PopupMenu1) Parent(#MenuBar1) Tabposition(1) Tabstop(False) Style(#Style1)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem2) Caption('MenuItem2') Displayposition(2) Height(30) Left(100) Menupopup(#PopupMenu2) Parent(#MenuBar1) Tabposition(2) Tabstop(False)
+    
+    Define_Com Class(#PRIM_PPNL.Menu) Name(#PopupMenu1) Left(80) Top(150)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem3) Caption('MenuItem3') Displayposition(1) Parent(#PopupMenu1) Tabposition(1) Tabstop(False) Width(148)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem4) Caption('MenuItem4') Displayposition(2) Parent(#PopupMenu1) Tabposition(2) Tabstop(False) Top(25) Width(148)
+    
+    Define_Com Class(#PRIM_PPNL.Menu) Name(#PopupMenu2) Left(180) Top(150)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem5) Caption('MenuItem5') Displayposition(1) Parent(#PopupMenu2) Tabposition(1) Tabstop(False) Width(148)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem6) Caption('MenuItem6') Displayposition(2) Parent(#PopupMenu2) Tabposition(2) Tabstop(False) Top(25) Width(148)
+    Define_Com Class(#PRIM_PPNL.MenuItem) Name(#MenuItem7) Caption('MenuItem7') Displayposition(3) Height(30) Left(200) Parent(#MenuBar1) Tabposition(3) Tabstop(False)
+    
+    Evtroutine Handling(#Com_owner.Initialize)
+    
+    * This code will attempt to find the menu items nested
+    * That is all menu items from a menu bar
+    * Then all pop up menus, followed by all menu items in each pop up
+    
+    If (1 = 0)
+    
+    * Find Menu Items in Menu Bars
+    For Each(#Menu_Bar) In(#com_owner.ComponentControls)
+    If (#Menu_Bar *Is #PRIM_PPNL.MenuBar)
+    For Each(#Menu_Item) In((#Menu_Bar *As #PRIM_PPNL.MenuBar).ComponentControls)
+    If (#Menu_Item *Is #PRIM_PPNL.MenuItem)
+    (#Menu_Item *As #PRIM_PPNL.MenuItem).Alignment := Center
+    Endif
+    Endfor
+    Endif
+    Endfor
+    
+    * Find Menu Items in Pop Up Menus
+    For Each(#PopUp_Menu) In(#com_owner.ComponentMembers)
+    If (#PopUp_Menu *Is #PRIM_PPNL.Menu)
+    For Each(#Menu_Item) In((#PopUp_Menu *As #PRIM_PPNL.Menu).ComponentControls)
+    If (#Menu_Item *Is #PRIM_PPNL.MenuItem)
+    (#Menu_Item *As #PRIM_PPNL.MenuItem).Alignment := Center
+    Endif
+    Endfor
+    Endif
+    Endfor
+    
+    Endif
+    
+    * This is an alternative form - it just looks for all the menu items regardless of where they are at
+    
+    If (1 = 1)
+    
+    * Find All Menu Items
+    For Each(#Menu_item) In(#com_owner.ComponentMembers)
+    If (#Menu_item *Is #PRIM_PPNL.MenuItem)
+    (#Menu_item *As #PRIM_PPNL.MenuItem).Alignment := Center
+    Endif
+    Endfor
+    
+    Endif
+    
+    Endroutine
+    
+    End_Com
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              Spinner
+
+    Multilingual Text:
+    - ENG:
+        Text:               "Loading..."
