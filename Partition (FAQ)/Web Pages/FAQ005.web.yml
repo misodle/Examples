@@ -12,13 +12,161 @@
 
   Source: |
     Begin_Com Role(*EXTENDS #PRIM_WEB)
-    Define_Com Class(#PRIM_LIST) Name(#List1) Displayposition(1) Left(109) Parent(#COM_OWNER) Tabposition(1) Top(126) Height(291) Width(604)
-    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_TEXT1) Columnwidth(342) Displayposition(1) Parent(#List1) Source(#STD_TEXT)
-    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_TEXTS1) Columnwidth(207) Displayposition(2) Parent(#List1) Source(#STD_TEXTS)
+    
+    * This example illustrates a pop up menu on a list column
+    * Setting the Show Prompter property on a column cell will turn on the 3 dots prompter on the right of the cell
+    * The prompter will not show up unless it is editable so you need both
+    * ... Showprompter(True) Columnreadonly(False)
+    * to activate you add a PrompterActivate event handler for the column cell
+    * e.g. #ColumnSTD_TEXT1.PrompterActivate
+    *
+    * There is currently no right click in VL Web because the product is meant to be cross platform
+    * That is mobile, table, and PC - there is no right click on mobile or tablet, so it is not included
+    * You can use a regular left click event instead to pop up a window
+    *
+    * We show here a regular column click event handler activating the same pop up
+    *
+    * Normally we would not include the pop up in the same program as the list
+    * Instead the prompt woudl be a seperate reuseable part. Here we do this for illustrative purposes
+    * We include mthroutines to formally pass parameters into and out of the prompt
+    *
+    
+    
+    Define_Com Class(#PRIM_LIST) Name(#List1) Displayposition(1) Left(20) Parent(#COM_OWNER) Tabposition(1) Top(20) Height(309) Width(584)
+    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_TEXT1) Columnwidth(345) Displayposition(1) Parent(#List1) Source(#STD_TEXT) Columnreadonly(False) Showprompter(True)
+    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_TEXTS1) Columnwidth(209) Displayposition(2) Parent(#List1) Source(#STD_TEXTS)
+    Define_Com Class(#PRIM_PPNL) Name(#Popup1) Closebutton(True) Left(630) Parent(#COM_OWNER) Titlebar(True) Top(16) Caption('Menu1') Height(200) Width(400)
+    Define_Com Class(#PRIM_PPNL) Name(#Popup2) Closebutton(True) Left(630) Parent(#COM_OWNER) Titlebar(True) Top(256) Caption('Menu2') Height(200) Width(400)
+    Define_Com Class(#STD_TEXT.Visual) Name(#p1_STD_TEXT) Componentversion(1) Displayposition(2) Height(42) Left(35) Parent(#Popup1) Tabposition(2) Top(50) Usepicklist(False) Width(300) Labelposition(Top) Marginleft(0) Margintop(22)
+    Define_Com Class(#STD_TEXTS.Visual) Name(#P1_STD_TEXTS) Componentversion(1) Displayposition(3) Height(42) Left(35) Parent(#Popup1) Tabposition(3) Top(120) Usepicklist(False) Width(300) Labelposition(Top) Marginleft(0) Margintop(21)
+    Define_Com Class(#STD_TEXT.Visual) Name(#P2_STD_TEXT) Componentversion(1) Displayposition(2) Height(42) Left(35) Parent(#Popup2) Tabposition(2) Top(50) Usepicklist(False) Width(300) Labelposition(Top) Marginleft(0) Margintop(21)
+    Define_Com Class(#STD_TEXTS.Visual) Name(#P2_STD_TEXTS) Componentversion(1) Displayposition(3) Height(42) Left(35) Parent(#Popup2) Tabposition(3) Top(120) Usepicklist(False) Width(300) Labelposition(Top) Marginleft(0) Margintop(21)
     
     Evtroutine Handling(#Com_owner.Initialize)
     
+    #std_text := 'One'
+    #std_texts := 'Row 1'
     Add_Entry To_List(#List1)
+    
+    #STD_TEXT := 'Two'
+    #std_texts := 'Row 2'
+    Add_Entry To_List(#List1)
+    
+    #std_text := 'Three'
+    #std_texts := 'Row 3'
+    Add_Entry To_List(#List1)
+    
+    Endroutine
+    
+    * ===========================================================
+    * Prompter 1
+    * ===========================================================
+    
+    * This Prompter is brought up by clicking the 3 dots prompt icon
+    * It is only allowed on an editable field
+    
+    Evtroutine Handling(#ColumnSTD_TEXT1.PrompterActivate)
+    
+    * We can try to calculate the exact position we want the prompt to show up
+    * This can get a little complex
+    
+    * #Popup1.Top := #List1.Top + #List1.ColumnHeaderHeight + #List1.CurrentItem.ScrollTop + #List1.RowHeight
+    * #Popup1.Left := #List1.Left + #ColumnSTD_TEXT1.ColumnWidth - 20
+    
+    * Instead we just use the current location of the mouse pointer
+    #Popup1.Top := #SYS_MOUSE.VerPosition
+    #Popup1.Left := #SYS_MOUSE.HorPosition
+    
+    * Why does this work?
+    * The row we are on becomes the current item so the values in the row are referrable by the field name
+    * We could just the fields directly of course, but this would normally be an RP
+    * So we invoke this like we would for the RP case
+    #com_owner.pass_prompt1_inputs I_Std_Text(#STD_TEXT) I_Std_Texts(#STD_TEXTS)
+    
+    * show the popup
+    #Popup1.ShowPopup
+    
+    Endroutine
+    
+    * If this was a seperate reuseable part we would need to pass the parms formally
+    
+    Mthroutine Name(pass_prompt1_inputs)
+    
+    Define_Map For(*input) Class(#std_Text) Name(#i_STD_TEXT)
+    Define_Map For(*input) Class(#std_Texts) Name(#i_STD_TEXTS)
+    
+    #p1_STD_TEXT := #i_STD_TEXT
+    #P1_STD_TEXTS := #i_STD_TEXTS
+    
+    Endroutine
+    
+    * When closing the prompt you cand do something (like update the row)
+    
+    Evtroutine Handling(#Popup1.Closing)
+    #com_owner.Update_Row I_Std_Text(#p1_STD_TEXT) I_Std_Texts(#P1_STD_TEXTS)
+    Endroutine
+    
+    * ===========================================================
+    * Prompter 2
+    * ===========================================================
+    
+    * This prompter is brought up by clicking on a cell
+    * The cell can be read only
+    
+    Evtroutine Handling(#ColumnSTD_TEXTS1.Click)
+    
+    * Position popup relative to the mouse position at click
+    #Popup2.Top := #SYS_MOUSE.VerPosition
+    #Popup2.Left := #SYS_MOUSE.HorPosition
+    
+    * Pass the values for the current row
+    #com_owner.pass_prompt2_inputs I_Std_Text(#STD_TEXT) I_Std_Texts(#STD_TEXTS)
+    
+    * Allow the pop up to move around and be sized
+    #Popup2.TouchMove := Both
+    #Popup2.TouchSize := All
+    
+    * Show the popup
+    #Popup2.ShowPopup
+    
+    Endroutine
+    
+    * Pass values to prompt2
+    
+    Mthroutine Name(pass_prompt2_inputs)
+    
+    Define_Map For(*input) Class(#std_Text) Name(#i_STD_TEXT)
+    Define_Map For(*input) Class(#std_Texts) Name(#i_STD_TEXTS)
+    
+    #P2_STD_TEXT := #i_STD_TEXT
+    #P2_STD_TEXTS := #i_STD_TEXTS
+    
+    Endroutine
+    
+    * When closing the prompt you cand do something (like update the row)
+    
+    Evtroutine Handling(#Popup2.Closing)
+    #com_owner.Update_Row I_Std_Text(#P2_STD_TEXT) I_Std_Texts(#P2_STD_TEXTS)
+    Endroutine
+    
+    
+    * ===========================================================
+    * Update the row
+    * ===========================================================
+    
+    Mthroutine Name(Update_Row)
+    
+    Define_Map For(*input) Class(#std_Text) Name(#i_STD_TEXT)
+    Define_Map For(*input) Class(#std_Texts) Name(#i_STD_TEXTS)
+    
+    * Again this works because the current row position in the list is set
+    * There for we can update the list row in place
+    * If the position were to move (say we have a non modal pop-up and we move the position in the list before we
+    * close it to do this update) then we would need to do SELECT_LIST to get to the correct entry in the list and
+    * THEN do an UPD_ENTRY.
+    #STD_TEXT := #i_STD_TEXT
+    #STD_TEXTS := #i_STD_TEXTS
+    Upd_Entry In_List(#List1)
     
     Endroutine
     
