@@ -1,0 +1,36 @@
+﻿Web Page:
+  Name:               FAQ005
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Prompting in Lists"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_WEB)
+    Define_Com Class(#PRIM_LIST) Name(#List1) Displayposition(1) Left(109) Parent(#COM_OWNER) Tabposition(1) Top(126) Height(291) Width(604)
+    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_TEXT1) Columnwidth(342) Displayposition(1) Parent(#List1) Source(#STD_TEXT)
+    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_TEXTS1) Columnwidth(207) Displayposition(2) Parent(#List1) Source(#STD_TEXTS)
+    
+    Evtroutine Handling(#Com_owner.Initialize)
+    
+    Add_Entry To_List(#List1)
+    
+    Endroutine
+    
+    
+    
+    End_Com
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              Spinner
+
+    Multilingual Text:
+    - ENG:
+        Text:               "Loading..."
