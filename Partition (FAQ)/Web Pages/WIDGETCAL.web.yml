@@ -1,0 +1,49 @@
+﻿Web Page:
+  Name:               WidgetCalulatorPage
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Example using a Widget as a Calculator"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_WEB) Layoutmanager(#Layout1)
+    Define_Com Class(#PRIM_TBLO) Name(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#Layout1)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#TestWidgetItem1) Manage(#TestWidget) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Edit2Item1) Manage(#Edit2) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Edit1Item1) Manage(#Edit1) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Label1Item1) Manage(#Label1) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#Button1Item1) Manage(#Button1) Parent(#Layout1) Row(#Row1) Sizing(None) Column(#Column1) Alignment(TopLeft) Flow(Down) Margintop(10)
+    
+    Define_Com Class(#TestWidget) Name(#TestWidget) Displayposition(1) Height(145) Left(0) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Width(145)
+    Define_Com Class(#PRIM_EDIT) Name(#Edit1) Displayposition(2) Left(0) Parent(#COM_OWNER) Showselection(False) Showselectionhilight(False) Tabposition(2) Top(165)
+    Define_Com Class(#PRIM_EDIT) Name(#Edit2) Displayposition(3) Left(0) Parent(#COM_OWNER) Showselection(False) Showselectionhilight(False) Tabposition(3) Top(200)
+    Define_Com Class(#PRIM_LABL) Name(#Label1) Caption('Answer:') Displayposition(4) Ellipses(Word) Height(25) Left(0) Parent(#COM_OWNER) Tabposition(4) Tabstop(False) Top(235) Verticalalignment(Center) Width(120)
+    Define_Com Class(#PRIM_PHBN) Name(#Button1) Caption('Add them') Displayposition(5) Left(0) Parent(#COM_OWNER) Tabposition(5) Top(270) Buttondefault(True)
+    
+    
+    Evtroutine Handling(#Com_owner.Initialize)
+    #TestWidget.setup
+    Endroutine
+    
+    Evtroutine Handling(#Button1.Click)
+    #TestWidget.addition Value1(#Edit1.Value.AsNumber) Value2(#Edit2.Value.AsNumber)
+    #Label1 := #TestWidget.sum.AsString
+    Endroutine
+    End_Com
+    
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              Spinner
+
+    Multilingual Text:
+    - ENG:
+        Text:               "Loading..."
