@@ -1,0 +1,167 @@
+﻿Web Page:
+  Name:               FAQ007
+  Enabled For RDMLX:  Yes
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Dynamic Menu Demo"
+
+  Source: |
+    Begin_Com Role(*EXTENDS #PRIM_WEB) Layoutmanager(#PageLayout) Theme(#FAQ007T)
+    
+    * Dynamic Menu Demo
+    *
+    * This demo uses a list control to display multiple menu items.
+    *
+    * Each menu Item represents an RP which will load as the main body of the page.
+    * If the RP has not been loaded yet, it is created dynamically.
+    * If it already exists, is is displayed.
+    * The last panel displayed is hidden.
+    * The loaded RP are stored in a collection.
+    *
+    * If one imagines that you have to log on to use this, you could load the options allowed from a file per user.
+    * This exercise is left up to the developer as the details for this can be as simple or as complex as needed.
+    *
+    * There are other ways to go here. You could have a tree control with user defined controls for each menu item.
+    *
+    * There is a style shipped with this. It is used to modify the look and feel of a default list to not show borders and certain highlighting on positioning.
+    
+    Define_Com Class(#PRIM_TBLO) Name(#PageLayout)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column1) Displayposition(1) Parent(#PageLayout) Width(209) Units(Pixels)
+    Define_Com Class(#PRIM_TBLO.Column) Name(#Column2) Displayposition(2) Parent(#PageLayout) Width(1.64)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row1) Displayposition(1) Parent(#PageLayout) Height(80) Units(Pixels)
+    Define_Com Class(#PRIM_TBLO.Row) Name(#Row2) Displayposition(2) Parent(#PageLayout)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem1) Column(#Column2) Flow(Down) Manage(#PageTitle) Parent(#PageLayout) Row(#Row1) Sizing(None)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#LayoutItem3) Column(#Column1) Manage(#Company_Logo) Parent(#PageLayout) Row(#Row1)
+    Define_Com Class(#PRIM_TBLO.Item) Name(#List1Item1) Manage(#Menu_List) Parent(#PageLayout) Row(#Row2) Column(#Column1) Alignment(TopCenter) Marginbottom(5) Marginleft(5) Marginright(5) Margintop(5) Sizing(ContentHeightFitToWidth)
+    
+    Define_Com Class(#PRIM_LABL) Name(#PageTitle) Caption('This is the Page Title') Displayposition(1) Ellipses(Word) Height(112) Left(546) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(-16) Verticalalignment(Center) Width(317) Themedrawstyle('Title')
+    Define_Com Class(#PRIM_IMAG) Name(#Company_Logo) Displayposition(2) Height(80) Left(0) Parent(#COM_OWNER) Tabposition(2) Tabstop(False) Top(0) Width(209) Imagesizing(BestFit) Filename('/images/lansa.gif')
+    
+    * **************************************************************
+    * Components For Dyanmic Panels
+    * **************************************************************
+    
+    * Panel Key
+    Define Field(#panel_key) Reffld(#std_text)
+    
+    * Collection of Panels keyed by value (Command Handlers)
+    * note: in real life this will be an ancestor component for each panel for shared method routines
+    Define_Com Class(#prim_kcol<#PRIM_PANL #std_text>) Name(#gPanels) Style(Collection)
+    
+    * Reference to the active panel for simple handling
+    * note: in real life use an ancestor component for shared method routines
+    Define_Com Class(#PRIM_PANL) Name(#gActivePanel) Reference(*dynamic)
+    
+    * Layout Item for the active panel. Will manage which ever panel is activated
+    * Note: Downside to this technique...you can not SEE the different panels using the layout manager in the ribbon so you have to code the layout by hand and KNOWN the parameters
+    Define_Com Class(#PRIM_TBLO.Item) Name(#gActivePanelLayout) Parent(#PageLayout) Row(#Row2) Column(#Column2) Marginleft(2) Marginright(2) Margintop(2) Alignment(TopCenter)
+    
+    * Menu List
+    Define_Com Class(#PRIM_LIST) Name(#Menu_List) Displayposition(3) Parent(#COM_OWNER) Tabposition(3) Top(80) Width(199) Height(150) Columnlines(False) Autoselectitem(False) Rowlines(False) Columnsortarrow(False) Left(5) Columnheaderheight(0) Itemthemedrawstyle('CustomMenu_ListItem') Themedrawstyle('CustomMenu_ListColumn')
+    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_DESC1) Columnwidth(25) Displayposition(1) Parent(#Menu_List) Source(#STD_DESC) Columnunits(Proportion) Autoselect(False)
+    Define_Com Class(#PRIM_LIST.String) Name(#ColumnSTD_NAME1) Columnwidth(0) Displayposition(2) Parent(#Menu_List) Source(#STD_NAME) Columnvisible(False) Autoselect(False) Visible(False)
+    
+    Mthroutine Name(PanelActivate)
+    
+    * Object Reference to the Label Clicked
+    Define_Map For(*Input) Class(#std_text) Name(#Label)
+    Define_Map For(*Input) Class(#std_text) Name(#RP_Description)
+    
+    * Adjust component name to Canonical form (need this as long as we have the short names generating the js file names)
+    #Label := #Label.Substring( 1 8 ).trim
+    
+    * Hide the existing active panel
+    If (#gActivePanel *IsNot *null)
+    #gActivePanel.Fadeout Duration(250)
+    Endif
+    
+    * Panels only created when required
+    * If no panel exists keyed by the label, create it
+    #panel_key := #Label
+    
+    * #sys_web.alert( ('[' + #panel_key + ']') )
+    
+    If_Ref Com(#gPanels<#panel_key>) Is(*null)
+    * Note: CreatePanel will create a Panel keyed by the Label Object passed by reference to the routine as a parameter and then return a reference to the Panel Created, we then add this to the gPanels collection
+    
+    #gPanels<#panel_key> <= #Com_owner.PanelCreate( #panel_key )
+    
+    * Attach the Panel to this Form - by setting the Parent (only need to do this once)
+    #gPanels<#panel_key>.Parent <= #COM_OWNER
+    
+    Endif
+    
+    * Connect the Table Layout to the Panel   (since there is just one layout item we need to do this everytime)
+    #gActivePanelLayout.manage <= #gPanels<#panel_key>
+    
+    * Wait to visualize the component
+    If (#gPanels<#panel_key>.Parent.IsRealized)
+    #gPanels<#panel_key>.Realize
+    Endif
+    
+    * Show the panel and make it the active one
+    #gPanels<#panel_key>.Fadein Duration(250)
+    
+    * Set New Active Panel
+    #gActivePanel <= #gPanels<#panel_key>
+    
+    Endroutine
+    
+    Mthroutine Name(PanelCreate) Access(*Private)
+    
+    Define_Map For(*Input) Class(#std_text) Name(#Label)
+    
+    * note: In real life this should be an ancestor of some kind so you can reference methods in the child
+    Define_Map For(*Result) Class(#prim_panl) Name(#Result) Pass(*by_reference)
+    
+    * Find the reusable to be instantiated based upon the label object reference passed
+    * #SYS_WEB.Alert( ("[" + #Label.Value + "]") )
+    Set_Ref Com(#Result) To(*CREATE_FROM #Label.Value.Trim)
+    
+    * On exit the #result object is returned (the resuable panel)
+    
+    Endroutine
+    
+    Evtroutine Handling(#Com_owner.Initialize)
+    
+    * This is hard coded
+    * Dynamically it would be loaded from a security file for valid options per user.
+    * Note, the second field, STD_NAME is the name of the RP to load.
+    * Also note, it is the ID of the RP, not the long name.
+    * Currently all names are truncated to support compatibility with IBMi naming standards.
+    
+    #STD_DESC := 'Home Page'
+    #STD_NAME := 'FAQ007M1'
+    Add_Entry To_List(#Menu_List)
+    
+    #STD_DESC := 'User Profile Details'
+    #STD_NAME := 'FAQ007M2'
+    Add_Entry To_List(#Menu_List)
+    
+    * Simulate more menu options
+    Begin_Loop Using(#STD_NUM) From(3) To(10)
+    
+    #STD_DESC := 'Menu Option ' + #STD_NUM.AsString
+    #STD_NAME := 'FAQ007M3'
+    Add_Entry To_List(#Menu_List)
+    
+    End_Loop
+    
+    Endroutine
+    
+    * Activate the Menu Item
+    Evtroutine Handling(#ColumnSTD_DESC1.Click)
+    #Com_owner.PanelActivate Label(#std_name) Rp_Description(#STD_DESC)
+    Endroutine
+    
+    End_Com
+
+  Offline Support:    No
+
+  Loading Screen:
+    Image:              None

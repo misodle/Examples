@@ -1,0 +1,19 @@
+﻿Reusable Part:
+  Name:               FAQ007M2
+  Enabled For RDMLX:  Yes
+  Target Platform:    Browser
+
+  Framework:
+    Id1:                10240
+    Id2:                30
+
+  Multilingual Details:
+  - ENG:
+      Description:        "Dynamic Menu RP"
+
+  Source: |
+    Function Options(*DIRECT)
+    Begin_Com Role(*EXTENDS #PRIM_PANL) Displayposition(1) Height(270) Left(0) Tabposition(1) Top(0) Width(500)
+    Define_Com Class(#PRIM_LABL) Name(#lbl_The_Title) Caption('User Profile Options') Displayposition(1) Ellipses(Word) Height(25) Left(103) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(80) Verticalalignment(Center) Width(120)
+    
+    End_Com
