@@ -14,7 +14,7 @@
     Begin_Com Role(*EXTENDS #PRIM_WEB)
     Define_Com Class(#PRIM_VS.Style) Name(#Style1) Fontsize(26)
     
-    Define_Com Class(#PRIM_LABL) Name(#Label1) Caption('Hello World') Displayposition(1) Ellipses(Word) Height(60) Left(116) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(93) Verticalalignment(Center) Width(205) Style(#Style1)
+    Define_Com Class(#PRIM_LABL) Name(#Label1) Caption('Hello World xx') Displayposition(1) Ellipses(Word) Height(100) Left(116) Parent(#COM_OWNER) Tabposition(1) Tabstop(False) Top(93) Verticalalignment(Center) Width(205) Style(#Style1)
     
     Evtroutine Handling(#Com_owner.Initialize)
     
